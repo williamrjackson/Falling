@@ -95,6 +95,7 @@ public class FallController : MonoBehaviour
     }
 
     bool is3d = false;
+    public bool Is3D => is3d;
 
     public void Toggle3D()
     {
