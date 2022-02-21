@@ -77,11 +77,11 @@ public class FallController : MonoBehaviour
     private IEnumerator ZoomRoutine()
     {
         Wrj.Utils.MapToCurve.EaseIn.Move(camera.transform, Vector3.up * targetCamPos, .75f);
-        yield return Wrj.Utils.MapToCurve.Linear.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, targetFOV, .75f).coroutine;
+        yield return Wrj.Utils.MapToCurve.EaseIn.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, targetFOV, .75f).coroutine;
     }
     private IEnumerator UnZoomRoutine()
     {
         Wrj.Utils.MapToCurve.EaseIn.Move(camera.transform, Vector3.up * 20f, .75f);
-        yield return Wrj.Utils.MapToCurve.Linear.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, 60f, .75f).coroutine;
+        yield return Wrj.Utils.MapToCurve.EaseIn.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, 60f, .75f).coroutine;
     }
 }

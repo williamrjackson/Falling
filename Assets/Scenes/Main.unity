@@ -346,8 +346,8 @@ MonoBehaviour:
   range: {x: 7, y: 6}
   xySpeed: 0.1
   camera: {fileID: 963194227}
-  targetFOV: 30
-  targetCamPos: 40
+  targetFOV: 5
+  targetCamPos: 118
   isFalling: 0
 --- !u!4 &338270119
 Transform:
