@@ -11,11 +11,12 @@ public class DisableAfterDelay : MonoBehaviour
     private Transform walls;
     [SerializeField]
     private float wallScale = 2f;
-    // Start is called before the first frame update
+
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(delay - 1f);
+        Wrj.Utils.AffectGORecursively(gameObject, (go) => go.Alpha(0f, 1f));
+        Wrj.Utils.DeferredExecution(2f, () => gameObject.SetActive(false));
         walls.EaseScale(Vector3.one * wallScale, 1f);
         fallController.isFalling = true;
     }

@@ -18,7 +18,7 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 var spawn = pool.GetObject();
                 spawn.transform.localPosition = spawn.transform.localPosition.With(x: Random.Range(-5f, 5f), z: Random.Range(-5f, 5f));
-                Vector3 target = spawn.transform.localPosition.With(y: 220f);
+                Vector3 target = spawn.transform.localPosition.With(y: 16f);
                 spawn.Move(target, 1f);
             }
         }
