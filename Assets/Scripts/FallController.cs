@@ -18,8 +18,28 @@ public class FallController : MonoBehaviour
     private Camera threeDCam;
     [SerializeField]
     private Camera twoDCam;
+    [SerializeField]
+    ParticleSystem starfield;
     private Coroutine zoomCoro;
-    public bool isFalling = false;
+    private bool _isFalling = false;
+    public bool IsFalling
+    {
+        set
+        {
+            if (_isFalling == value) return;
+            _isFalling = value;
+            if (_isFalling)
+            {
+                starfield.Play();
+            }
+            else
+            {
+                starfield.Stop();
+            }
+        }
+        get => _isFalling;
+    }
+
     private float initFOV;
     private Vector3 initCamPos;
 
@@ -45,7 +65,7 @@ public class FallController : MonoBehaviour
 
     void Update()
     {
-        if (!isFalling) return;
+        if (!_isFalling) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -105,7 +125,7 @@ public class FallController : MonoBehaviour
     private void Switcheroo()
     {
         Debug.Log("Switcheroo");
-        if(!is3d)
+        if(is3d)
         {
             if (zoomCoro != null)
             {

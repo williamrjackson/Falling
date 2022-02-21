@@ -18,6 +18,6 @@ public class DisableAfterDelay : MonoBehaviour
         Wrj.Utils.AffectGORecursively(gameObject, (go) => go.Alpha(0f, 1f));
         Wrj.Utils.DeferredExecution(2f, () => gameObject.SetActive(false));
         walls.EaseScale(Vector3.one * wallScale, 1f);
-        fallController.isFalling = true;
+        fallController.IsFalling = true;
     }
 }
