@@ -13,15 +13,35 @@ public class FallController : MonoBehaviour
     [SerializeField]
     Camera camera;
 
-    [SerializeField]
-    float targetFOV = 30f;
-    
-    [SerializeField]
-    float targetCamPos = 30f;
 
-    public bool isFalling = false;
-
+    [SerializeField]
+    private Camera threeDCam;
+    [SerializeField]
+    private Camera twoDCam;
     private Coroutine zoomCoro;
+    public bool isFalling = false;
+    private float initFOV;
+    private Vector3 initCamPos;
+
+    public static FallController Instance;
+    void Awake ()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple FallController's instantiated. Component removed from " + gameObject.name + ". Instance already found on " + Instance.gameObject.name + "!");
+            Destroy(this);
+        }
+    }
+    private void Start()
+    {
+        initFOV = camera.fieldOfView;
+        initCamPos = camera.transform.localPosition;
+    }
+
 
     void Update()
     {
@@ -74,14 +94,43 @@ public class FallController : MonoBehaviour
         humanoid.localPosition = pos;
     }
 
+    bool is3d = false;
+
+    public void Toggle3D()
+    {
+        is3d = !is3d;
+        Switcheroo();
+    }
+    private void Switcheroo()
+    {
+        Debug.Log("Switcheroo");
+        if(!is3d)
+        {
+            if (zoomCoro != null)
+            {
+                StopCoroutine(zoomCoro);
+                zoomCoro = null;
+            }
+            zoomCoro = StartCoroutine(ZoomRoutine());
+        }
+        else
+        {
+            if (zoomCoro != null)
+            {
+                StopCoroutine(zoomCoro);
+                zoomCoro = null;
+            }
+            zoomCoro = StartCoroutine(UnZoomRoutine());
+        }
+    }
     private IEnumerator ZoomRoutine()
     {
-        Wrj.Utils.MapToCurve.EaseIn.Move(camera.transform, Vector3.up * targetCamPos, .75f);
-        yield return Wrj.Utils.MapToCurve.EaseIn.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, targetFOV, .75f).coroutine;
+        Wrj.Utils.MapToCurve.Linear.MatchSibling(camera.transform, threeDCam.transform, .75f);
+        yield return Wrj.Utils.MapToCurve.Linear.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, threeDCam.fieldOfView, .75f).coroutine;
     }
     private IEnumerator UnZoomRoutine()
     {
-        Wrj.Utils.MapToCurve.EaseIn.Move(camera.transform, Vector3.up * 20f, .75f);
-        yield return Wrj.Utils.MapToCurve.EaseIn.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, 60f, .75f).coroutine;
+        Wrj.Utils.MapToCurve.Linear.MatchSibling(camera.transform, twoDCam.transform, .75f);
+        yield return Wrj.Utils.MapToCurve.Linear.ManipulateFloat((v) => camera.fieldOfView = v, camera.fieldOfView, twoDCam.fieldOfView, .75f).coroutine;
     }
 }
