@@ -7,7 +7,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Enter On Portal");
+        Debug.Log("Trigger Enter On Portal, yo");
         FallController.Instance.Toggle3D();
     }
 }
